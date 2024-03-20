@@ -19,8 +19,13 @@
     "url": "https://github.com/r3ps4J/r3_filehost/issues"
   },
   "homepage": "https://github.com/r3ps4J/r3_filehost#readme",
+  "dependencies": {
+    "@citizenfx/http-wrapper": "^0.2.2",
+    "koa": "^2.15.1"
+  },
   "devDependencies": {
     "@citizenfx/server": "^2.0.7669-1",
+    "@types/koa": "^2.15.0",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
     "esbuild": "^0.20.2",
