@@ -1,0 +1,33 @@
+{
+  "name": "r3_filehost",
+  "version": "1.0.0",
+  "description": "Simple resource allowing you to host files directly on FXServer.",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node16 --outfile=dist/index.js",
+    "watch": "npm run build -- --watch",
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r3ps4J/r3_filehost.git"
+  },
+  "author": "r3ps4J",
+  "license": "LGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/r3ps4J/r3_filehost/issues"
+  },
+  "homepage": "https://github.com/r3ps4J/r3_filehost#readme",
+  "devDependencies": {
+    "@citizenfx/server": "^2.0.7669-1",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "esbuild": "^0.20.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.2"
+  }
+}
