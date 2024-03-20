@@ -21,11 +21,15 @@
   "homepage": "https://github.com/r3ps4J/r3_filehost#readme",
   "dependencies": {
     "@citizenfx/http-wrapper": "^0.2.2",
+    "@koa/router": "^12.0.1",
+    "formidable": "^3.5.1",
     "koa": "^2.15.1"
   },
   "devDependencies": {
     "@citizenfx/server": "^2.0.7669-1",
+    "@types/formidable": "^3.4.5",
     "@types/koa": "^2.15.0",
+    "@types/koa__router": "^12.0.4",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
     "esbuild": "^0.20.2",
