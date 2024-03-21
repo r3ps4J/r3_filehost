@@ -49,5 +49,4 @@ router.post("/api/upload", async (ctx, next) => {
 app.use(router.routes()).use(router.allowedMethods());
 
 setHttpCallback(app.callback());
-
-console.log(`Reachable on ${GetConvar("web_baseUrl", "nothing")}/r3_filehost`);
+console.log(`r3_filehost can be reached on ${baseUrl}`);
