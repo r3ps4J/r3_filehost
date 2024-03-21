@@ -50,6 +50,12 @@ function getFirstFile(files: formidable.Files): formidable.File {
 }
 
 router.post("/api/upload", async (ctx, next) => {
+    const apiKey = GetConvar("filehost_apiKey", "false");
+    if (apiKey != "false" && ctx.headers["x-api-key"] != apiKey) {
+        ctx.throw(401, "Unauthorized");
+        return;
+    }
+
     const form = formidable({
         uploadDir: uploadsPath,
         keepExtensions: true,
