@@ -10,11 +10,20 @@ router.get("/", (ctx, next) => {
     ctx.set("Content-Type", "text/html");
     ctx.status = 200;
     ctx.body = `
-        <h2><code>r3_filehost</code> file uploader</h2>
-        <form action="/r3_filehost/api/upload" enctype="multipart/form-data" method="post">
-            <div>File: <input type="file" name="koaFiles" multiple="multiple" /></div>
-            <input type="submit" value="Upload" />
-        </form>
+        <html>
+            <style>
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+                }
+            </style>
+            <body>
+                <h2>r3_filehost</h2>
+                <form action="/r3_filehost/api/upload" enctype="multipart/form-data" method="post">
+                    <div>File: <input type="file" name="koaFiles" /></div>
+                    <input type="submit" value="Upload" />
+                </form>
+            </body>
+        </html>
     `;
 });
 
