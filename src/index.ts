@@ -1,5 +1,7 @@
 import Koa from "koa";
 import Router from "@koa/router";
+import serve from "koa-static";
+import mount from "koa-mount";
 import formidable from "formidable";
 import { setHttpCallback } from "@citizenfx/http-wrapper";
 import path from "path";
@@ -77,6 +79,7 @@ router.post("/api/upload", async (ctx, next) => {
     });
 });
 
+app.use(mount("/uploads", serve(uploadsPath)));
 app.use(router.routes()).use(router.allowedMethods());
 
 setHttpCallback(app.callback());
