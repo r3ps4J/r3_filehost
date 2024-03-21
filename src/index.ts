@@ -2,9 +2,18 @@ import Koa from "koa";
 import Router from "@koa/router";
 import formidable from "formidable";
 import { setHttpCallback } from "@citizenfx/http-wrapper";
+import path from "path";
+import fs from "fs";
 
 const app = new Koa();
 const router = new Router();
+
+const baseUrl = `https://${GetConvar("web_baseUrl", "nothing")}/r3_filehost`;
+const uploadsDir = path.join(GetResourcePath("r3_filehost"), "/uploads");
+
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+}
 
 router.get("/", (ctx, next) => {
     ctx.set("Content-Type", "text/html");
@@ -27,8 +36,23 @@ router.get("/", (ctx, next) => {
     `;
 });
 
+function getFirstFile(files: formidable.Files): formidable.File {
+    for (const name in files) {
+        if (Object.prototype.hasOwnProperty.call(files, name)) {
+            const fileArray = files[name];
+            for (const file of fileArray) {
+                return file;
+            }
+        }
+    }
+}
+
 router.post("/api/upload", async (ctx, next) => {
-    const form = formidable({});
+    const form = formidable({
+        uploadDir: uploadsDir,
+        keepExtensions: true,
+        maxFiles: 1,
+    });
 
     await new Promise<void>((resolve, reject) => {
         form.parse(ctx.req, (err, fields, files) => {
@@ -37,10 +61,17 @@ router.post("/api/upload", async (ctx, next) => {
                 return;
             }
 
+            const file = getFirstFile(files);
+
             ctx.set("Content-Type", "application/json");
             ctx.status = 200;
-            ctx.state = { fields, files };
-            ctx.body = JSON.stringify(ctx.state, null, 2);
+            ctx.state = {
+                fileName: file.newFilename,
+                baseUrl: baseUrl,
+                path: `/uploads/${file.newFilename}`,
+                url: `${baseUrl}/uploads/${file.newFilename}`,
+            };
+            ctx.body = JSON.stringify(ctx.state);
             resolve();
         });
     });
