@@ -9,10 +9,10 @@ const app = new Koa();
 const router = new Router();
 
 const baseUrl = `https://${GetConvar("web_baseUrl", "nothing")}/r3_filehost`;
-const uploadsDir = path.join(GetResourcePath("r3_filehost"), "/uploads");
+const uploadsPath = GetConvar("filehost_uploadsPath", path.join(GetResourcePath("r3_filehost"), "/uploads"));
 
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir);
+if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath);
 }
 
 router.get("/", (ctx, next) => {
@@ -49,7 +49,7 @@ function getFirstFile(files: formidable.Files): formidable.File {
 
 router.post("/api/upload", async (ctx, next) => {
     const form = formidable({
-        uploadDir: uploadsDir,
+        uploadDir: uploadsPath,
         keepExtensions: true,
         maxFiles: 1,
     });
