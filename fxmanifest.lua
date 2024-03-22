@@ -1,6 +1,7 @@
 -- FX information
 fx_version "cerulean"
 game "common"
+server_only "yes"
 
 -- Resource information
 name "r3_filehost"
