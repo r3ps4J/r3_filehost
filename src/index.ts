@@ -10,8 +10,25 @@ import fs from "fs";
 const app = new Koa();
 const router = new Router();
 
-const baseUrl = `https://${GetConvar("web_baseUrl", "nothing")}/r3_filehost`;
-const uploadsPath = GetConvar("filehost_uploadsPath", path.join(GetResourcePath("r3_filehost"), "/uploads"));
+const onFxServer = globalThis.GetConvar != undefined;
+const port = process.env.PORT ?? 3000;
+
+function getBaseUrl(): string {
+    if (!onFxServer) {
+        return `http://localhost:${port}`;
+    }
+    return `https://${GetConvar("web_baseUrl", "nothing")}/r3_filehost`;
+}
+
+function getUploadsPath(): string {
+    if (!onFxServer) {
+        return path.join(path.dirname(__dirname), "/uploads");
+    }
+    return GetConvar("filehost_uploadsPath", path.join(GetResourcePath("r3_filehost"), "/uploads"));
+}
+
+const baseUrl = getBaseUrl();
+const uploadsPath = getUploadsPath();
 
 if (!fs.existsSync(uploadsPath)) {
     fs.mkdirSync(uploadsPath);
@@ -29,7 +46,7 @@ router.get("/", (ctx, next) => {
             </style>
             <body>
                 <h2>r3_filehost</h2>
-                <form action="/r3_filehost/api/upload" enctype="multipart/form-data" method="post">
+                <form action="../api/upload" enctype="multipart/form-data" method="post">
                     <div>File: <input type="file" name="koaFiles" /></div>
                     <input type="submit" value="Upload" />
                 </form>
@@ -50,7 +67,7 @@ function getFirstFile(files: formidable.Files): formidable.File {
 }
 
 router.post("/api/upload", async (ctx, next) => {
-    const apiKey = GetConvar("filehost_apiKey", "false");
+    const apiKey = onFxServer ? GetConvar("filehost_apiKey", "false") : process.env.API_KEY ?? "false";
     if (apiKey != "false" && ctx.headers["x-api-key"] != apiKey) {
         ctx.throw(401, "Unauthorized");
         return;
@@ -88,5 +105,15 @@ router.post("/api/upload", async (ctx, next) => {
 app.use(mount("/uploads", serve(uploadsPath)));
 app.use(router.routes()).use(router.allowedMethods());
 
-setHttpCallback(app.callback());
-console.log(`r3_filehost can be reached on ${baseUrl}`);
+function listen(cb: () => void) {
+    if (!onFxServer) {
+        app.listen(port, cb);
+        return;
+    }
+    setHttpCallback(app.callback());
+    cb();
+}
+
+listen(() => {
+    console.log(`r3_filehost can be reached on ${baseUrl}`);
+});
