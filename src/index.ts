@@ -53,13 +53,18 @@ function getFirstFile(files: formidable.Files): formidable.File {
     }
 }
 
-router.post("/api/upload", async (ctx, next) => {
-    const apiKey = onFxServer ? GetConvar("filehost_apiKey", "false") : process.env.API_KEY ?? "false";
-    if (apiKey != "false" && ctx.headers["x-api-key"] != apiKey) {
-        ctx.throw(401, "Unauthorized");
-        return;
+app.use(async (ctx, next) => {
+    if (ctx.path.startsWith("/api")) {
+        const apiKey = onFxServer ? GetConvar("filehost_apiKey", "false") : process.env.API_KEY ?? "false";
+        if (apiKey != "false" && ctx.headers["x-api-key"] != apiKey) {
+            ctx.throw(401, "Unauthorized");
+            return;
+        }
     }
+    await next();
+});
 
+router.post("/api/upload", async (ctx, next) => {
     const form = formidable({
         uploadDir: uploadsPath,
         keepExtensions: true,
