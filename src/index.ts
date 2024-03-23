@@ -38,22 +38,7 @@ if (!fs.existsSync(uploadsPath)) {
 router.get("/", async (ctx, next) => {
     ctx.set("Content-Type", "text/html");
     ctx.status = 200;
-    ctx.body = `
-        <html>
-            <style>
-                body {
-                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-                }
-            </style>
-            <body>
-                <h2>r3_filehost</h2>
-                <form action="../api/upload" enctype="multipart/form-data" method="post">
-                    <div>File: <input type="file" name="file" /></div>
-                    <input type="submit" value="Upload" />
-                </form>
-            </body>
-        </html>
-    `;
+    ctx.body = fs.createReadStream(path.join(basePath, "/assets", "index.html"));
     await next();
 });
 
