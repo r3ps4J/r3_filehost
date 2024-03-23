@@ -12,6 +12,7 @@ const router = new Router();
 
 const onFxServer = globalThis.GetConvar != undefined;
 const port = process.env.PORT ?? 3000;
+const basePath = onFxServer ? GetResourcePath("r3_filehost") : path.dirname(__dirname);
 
 function getBaseUrl(): string {
     if (!onFxServer) {
@@ -22,9 +23,9 @@ function getBaseUrl(): string {
 
 function getUploadsPath(): string {
     if (!onFxServer) {
-        return path.join(path.dirname(__dirname), "/uploads");
+        return path.join(basePath, "/uploads");
     }
-    return GetConvar("filehost_uploadsPath", path.join(GetResourcePath("r3_filehost"), "/uploads"));
+    return GetConvar("filehost_uploadsPath", path.join(basePath, "/uploads"));
 }
 
 const baseUrl = getBaseUrl();
