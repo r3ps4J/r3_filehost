@@ -34,7 +34,7 @@ if (!fs.existsSync(uploadsPath)) {
     fs.mkdirSync(uploadsPath);
 }
 
-router.get("/", (ctx, next) => {
+router.get("/", async (ctx, next) => {
     ctx.set("Content-Type", "text/html");
     ctx.status = 200;
     ctx.body = `
@@ -53,6 +53,7 @@ router.get("/", (ctx, next) => {
             </body>
         </html>
     `;
+    await next();
 });
 
 function getFirstFile(files: formidable.Files): formidable.File {
@@ -100,6 +101,7 @@ router.post("/api/upload", async (ctx, next) => {
             resolve();
         });
     });
+    await next();
 });
 
 app.use(mount("/uploads", serve(uploadsPath)));
