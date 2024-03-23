@@ -7,12 +7,15 @@
     </style>
     <body>
         <h2>r3_filehost</h2>
-        <form action="../api/upload" enctype="multipart/form-data" method="post" onsubmit="setCookie(event)">
+        <form id="form" enctype="multipart/form-data" method="post" onsubmit="setCookie(event)">
             <div>X-API-Key: <input type="text" name="key" /></div>
             <div>File: <input type="file" name="file" /></div>
             <input type="submit" value="Upload" />
         </form>
         <script>
+            const form = document.getElementById("form");
+            form.action = `${window.location.href.replace(/\/$/, '')}/api/upload`;
+
             function setCookie(event) {
                 document.cookie = `X-API-Key=${event.target.elements.key.value}`;
                 return true;
