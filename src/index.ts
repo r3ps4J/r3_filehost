@@ -47,7 +47,7 @@ router.get("/", async (ctx, next) => {
             <body>
                 <h2>r3_filehost</h2>
                 <form action="../api/upload" enctype="multipart/form-data" method="post">
-                    <div>File: <input type="file" name="koaFiles" /></div>
+                    <div>File: <input type="file" name="file" /></div>
                     <input type="submit" value="Upload" />
                 </form>
             </body>
