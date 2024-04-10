@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -p ./temp/r3_filehost
 cp ./{fxmanifest.lua,LICENSE,README.md} ./temp/r3_filehost
 cp -r ./{dist,assets} ./temp/r3_filehost
