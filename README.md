@@ -20,3 +20,13 @@ set filehost_uploadsPath "C:\filehost_uploads"
 # Disable api key requirement.
 set filehost_apiKey "false"
 ```
+
+## Configuration for resources
+
+You will have to configure your resources to use this script. Files can be uploaded to the following route with these settings, make sure to replace the right information with your server information:
+
+| | |
+| - | - |
+| Url | `https://user-code.users.cfx.re/r3_filehost/api/upload` |
+| Headers | `Content-Type: multipart/form-data`<br>`X-API-Key: yourKeyIfSet` |
+| Field | Can be anything, `file` is a good choice. |
