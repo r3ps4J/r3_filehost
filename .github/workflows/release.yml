@@ -1,0 +1,33 @@
+---
+name: Release
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Release - Resource pack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run build
+
+      - name: Pack resource
+        run: scripts/pack.sh
+      
+      - name: Upload resource pack to release
+        run: gh release upload $RELEASE_TAG r3_filehost.zip
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{github.event.release.tag_name}}
