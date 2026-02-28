@@ -24,7 +24,7 @@ jobs:
         run: npm run build
 
       - name: Pack resource
-        run: scripts/pack.sh
+        run: bash scripts/pack.sh
       
       - name: Upload resource pack to release
         run: gh release upload $RELEASE_TAG r3_filehost.zip
